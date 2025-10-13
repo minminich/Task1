@@ -5,30 +5,14 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static final int SALT_LENGTH = 16;
+    private static final int PASSWORD_LENGTH = 16;
+
     private static final SecureRandom random = new SecureRandom();
     private static final String caps="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String small_caps="abcdefghijklmnopqrstuvwxyz";
-    private static final String Numeric="1234567890";
+    private static final String numeric="1234567890";
     private static final String special_char="~!@#$%^&*(_+{}|:_[?]>=<";
-    private static final String dic = caps + small_caps + Numeric + special_char;
-    private static final int PASSWORD_LENGTH = 16;
-
-    private static String hashPassword(String data) throws Exception {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hashBytes = digest.digest(data.getBytes());
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hashBytes) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) hexString.append('0');
-            hexString.append(hex);
-        }
-        return hexString.toString();
-    }
-
-    private static String hashPasswordWithSalt(String data) throws Exception {
-        return generateSalt() + hashPassword(data);
-    }
+    private static final String dic = caps + small_caps + numeric + special_char;
 
 
     private static String generatePassword() {
@@ -39,6 +23,7 @@ public class Main {
         }
         return password.toString();
     }
+
     //hashPassword как бы есть
     //checkPassword
     //checkLoginWithPassword
@@ -46,17 +31,13 @@ public class Main {
     //getPassword
     //enterLogin
     //enterPassword
+    //в демопроекте свинг для пароля или консоль?
+    //тесты для методов
+    //хранение паролей
+    //сделать проверку на хэш одинаковых паролей в checkPassword
     //в демопроекте свинг для пароля
     //тесты для методов
-    //хранение паролей в файле/списке
-
-
-    private static String generateSalt() {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        return salt.toString();
-    }
+    //хранение паролей
 
 
     public static void main(String[] args) throws Exception {
@@ -72,36 +53,20 @@ public class Main {
         System.out.println(login + "SHA-256 Hash: " + hashWithSHA256(input));
         System.out.println("SHA-256 Hash: " + hashWithSHA256(input_again));*/
 
-//        SecureRandom random = new SecureRandom();
-//        Scanner scanner = new Scanner(System.in);
-//        byte[] salt = new byte[16];
-//        random.nextBytes(salt);
-//        System.out.println(salt);
-//        try{
-//            String password = scanner.next();
-//            byte[] hashPassword = new byte[50];
-//            random.nextBytes(hashPassword);
-//            System.out.println(hashPassword);
 //
-//        }catch(Exception e){
-//            //if this.hash = hash;
-//            System.out.println("This hash is already used");
-//        }finally{
-//            //return hashPassword
-//        }
-        System.out.println(generateSalt());
-        System.out.println(generateSalt());
-        System.out.println(generateSalt());
-        System.out.println("----------------");
-        System.out.println(generatePassword());
-        System.out.println(generatePassword());
-        System.out.println(generatePassword());
-        System.out.println("----------------");
-        String password = generatePassword();
-        System.out.println(password);
-        System.out.println(hashPassword(password));
-        System.out.println(hashPasswordWithSalt(password));
-
+//        System.out.println(getSalt());
+//        System.out.println(generateSalt());
+//        System.out.println(generateSalt());
+//        System.out.println("----------------");
+//        System.out.println(generatePassword());
+//        System.out.println(generatePassword());
+//        System.out.println(generatePassword());
+//        System.out.println("----------------");
+//        String password = generatePassword();
+//        System.out.println(password);
+//        System.out.println(Hash.hashPassword(password));
+//        System.out.println(Hash.hashPassword(password));
+//        System.out.println(Hash.hashPasswordWithSalt(password));
 
     }
 }

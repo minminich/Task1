@@ -48,7 +48,16 @@ public class Main {
 //        System.out.println(password);
 //        System.out.println(Hash.hashPassword(password));
 //        System.out.println(Hash.hashPassword(password));
-//        System.out.println(Hash.hashPasswordWithSalt(password));
+//        System.out.println(Hash.hashPasswordWithSalt(password));\
+
+        System.out.println("Enter password: ");
+        Scanner scanner = new Scanner(System.in);
+        String password = scanner.nextLine();
+        String passwordHash = "miniminich";
+        String storedHash = PasswordHasher.hashPassword(password);
+        System.out.println("Hashed password: " + storedHash);
+        PasswordHasher.checkPasswordWithoutSalt(passwordHash, storedHash);
+
 
     }
 }

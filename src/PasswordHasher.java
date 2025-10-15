@@ -13,7 +13,7 @@ public class PasswordHasher {
         return getString(hashBytes);
     }
 
-    private static String hashPasswordWithGeneratedSalt(String password) throws Exception {
+    public static String hashPasswordWithGeneratedSalt(String password) throws Exception {
         String salt = generateSalt();
         return hashPassword(salt + password);
     }
@@ -40,14 +40,16 @@ public class PasswordHasher {
         return hexString.toString();
     }
 
-    public static void checkPassword(String password, String storedHash) throws Exception {
+    public static boolean checkPassword(String password, String storedHash) throws Exception {
         String hashedPassword = hashPasswordWithGeneratedSalt(password);
         if (!(hashedPassword.equals(storedHash))) {
-            throw new Exception("Password does not match stored hash");
+//            throw new Exception("Password does not match stored hash");
+            System.out.println("Password does not match stored hash");
         } else {
             System.out.println("Password verified");
         }
-    } // проверка equals для hashedPassword и storedHash с солью
+        return false;
+    } // нужно сравнивать хэщ, предварительно убрав соль
 
 
     public static void checkPasswordWithoutSalt(String password, String storedHash) throws Exception {

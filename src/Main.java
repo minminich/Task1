@@ -1,5 +1,6 @@
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -50,13 +51,41 @@ public class Main {
 //        System.out.println(Hash.hashPassword(password));
 //        System.out.println(Hash.hashPasswordWithSalt(password));\
 
-        System.out.println("Enter password: ");
+//        System.out.println("Enter password: ");
         Scanner scanner = new Scanner(System.in);
+//        String password = scanner.nextLine();
+//        String passwordHash = "miniminich";
+//        String storedHash = PasswordHasher.hashPassword(password);
+//        System.out.println("Hashed password: " + storedHash);
+//        PasswordHasher.checkPasswordWithoutSalt(passwordHash, storedHash);
+
+        PasswordManager passwordManager = new PasswordManager();
+        System.out.print("Input username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Input password: ");
         String password = scanner.nextLine();
-        String passwordHash = "miniminich";
-        String storedHash = PasswordHasher.hashPassword(password);
-        System.out.println("Hashed password: " + storedHash);
-        PasswordHasher.checkPasswordWithoutSalt(passwordHash, storedHash);
+
+        passwordManager.registerUser(username, password);
+        System.out.println("User " + username + "successfully registered");
+
+        System.out.print("Input username: ");
+        String usernameIn = scanner.nextLine();
+
+        System.out.print("Input password: ");
+        String passwordIn = scanner.nextLine();
+
+        if (passwordManager.authenticateUser(usernameIn, passwordIn)){
+            System.out.println("User " + username + "successfully authenticated");
+        } else{
+            System.out.println("User or password are incorrect");
+        }
+
+
+
+
+
+
 
 
     }

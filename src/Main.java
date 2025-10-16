@@ -6,21 +6,9 @@ import java.util.Scanner;
 
 public class Main {
 
-
-    //hashPassword как бы есть
-    //checkPassword
-    //checkLoginWithPassword
     //checkLogin
-    //getPassword
-    //enterLogin
-    //enterPassword
-    //в демопроекте свинг для пароля или консоль?
     //тесты для методов
-    //хранение паролей
     //сделать проверку на хэш одинаковых паролей в checkPassword
-    //в демопроекте свинг для пароля
-    //тесты для методов
-    //хранение паролей
 
 
     public static void main(String[] args) throws Exception {
@@ -60,6 +48,9 @@ public class Main {
 //        PasswordHasher.checkPasswordWithoutSalt(passwordHash, storedHash);
 
         PasswordManager passwordManager = new PasswordManager();
+
+        System.out.println(PasswordHasher.generateSalt());
+
         System.out.print("Input username: ");
         String username = scanner.nextLine();
 
@@ -68,25 +59,22 @@ public class Main {
 
         passwordManager.registerUser(username, password);
         System.out.println("User " + username + "successfully registered");
+        System.out.println(PasswordHasher.hashPassword(password));
 
         System.out.print("Input username: ");
         String usernameIn = scanner.nextLine();
 
         System.out.print("Input password: ");
         String passwordIn = scanner.nextLine();
+        System.out.println(PasswordHasher.hashPassword(passwordIn));
 
-        if (passwordManager.authenticateUser(usernameIn, passwordIn)){
-            System.out.println("User " + username + "successfully authenticated");
-        } else{
-            System.out.println("User or password are incorrect");
+        if (passwordManager.authenticateUser(usernameIn, passwordIn)) {
+                System.out.println("User " + username + " successfully authenticated");
+        } else {
+                System.out.println("User or password are incorrect");
         }
 
 
-
-
-
-
-
-
+        }
     }
-}
+

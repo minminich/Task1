@@ -10,27 +10,30 @@ public class PasswordHasher {
     public static String hashPassword(String data) throws Exception {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hashBytes = digest.digest(data.getBytes());
-        return getString(hashBytes);
+        return toString(hashBytes);
     }
 
     public static String hashPasswordWithGeneratedSalt(String password) throws Exception {
         String salt = generateSalt();
-        return hashPassword(salt + password);
+        String hash = hashPassword(salt + password);
+        return salt + hash;
     }
 
-    public static String hashPasswordWithSalt(String password, String salt) throws Exception {
+    public static String hashPasswordWithSalt(String password) throws Exception {
+        String salt = generateSalt();
         String saltedPassword = salt + password;
-        return hashPassword(saltedPassword);
+        String hash = hashPassword(saltedPassword);
+        return salt + hash;
     }
 
-    private static String generateSalt() {
+    public static String generateSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[SALT_LENGTH];
         random.nextBytes(salt);
-        return getString(salt);
+        return toString(salt);
     }
 
-    private static String getString(byte[] hashBytes) {
+    private static String toString(byte[] hashBytes) {
         StringBuilder hexString = new StringBuilder();
         for (byte b : hashBytes) {
             String hex = Integer.toHexString(0xff & b);
@@ -40,27 +43,42 @@ public class PasswordHasher {
         return hexString.toString();
     }
 
+//    private static String hashForCheck (String storedHash){
+//        StringBuilder sb = new StringBuilder(storedHash);
+//        sb.delete(0, SALT_LENGTH);
+//        return sb.toString();
+//    }
+
+
     public static boolean checkPassword(String password, String storedHash) throws Exception {
-        String hashedPassword = hashPasswordWithGeneratedSalt(password);
-        if (!(hashedPassword.equals(storedHash))) {
-//            throw new Exception("Password does not match stored hash");
-            System.out.println("Password does not match stored hash");
-        } else {
-            System.out.println("Password verified");
-        }
-        return false;
-    } // нужно сравнивать хэщ, предварительно убрав соль
+        String salt = storedHash.substring(0, SALT_LENGTH * 2);
+//        String saltedPassword = salt + password;
+        String hashedPassword = hashPassword(salt + password);
+        String hashedPasswordWithSalt = salt + hashedPassword;
 
-
-    public static void checkPasswordWithoutSalt(String password, String storedHash) throws Exception {
-        String hashedPassword = hashPassword(password);
-        if (!(hashedPassword.equals(storedHash))) {
-            throw new Exception("Password does not match stored hash");
-        } else {
-            System.out.println("Password verified");
-        }
+        return hashedPasswordWithSalt.equals(storedHash);
     }
 }
+
+
+//        if (!hashedPassword.equals(storedHash)) {
+////            throw new Exception("Password does not match stored hash");
+//            System.out.println("Password does not match stored hash");
+//        } else {
+//            System.out.println("Password verified");
+//        }
+//        return false;
+
+
+//    public static void checkPasswordWithoutSalt(String password, String storedHash) throws Exception {
+//        String hashedPassword = hashPassword(password);
+//        if (!(hashedPassword.equals(storedHash))) {
+//            throw new Exception("Password does not match stored hash");
+//        } else {
+//            System.out.println("Password verified");
+//        }
+//    }
+//}
 
 
 
